@@ -16,36 +16,31 @@ export class Statistics extends Component
     constructor()
     {
         super();
-        this.handleGood = this.handleGood.bind(this);
-        this.handleNeutral = this.handleNeutral.bind(this);
-        this.handleBad = this.handleBad.bind(this);
-        this.countTotalFeedback = this.countTotalFeedback.bind(this);
-        this.countPositiveFeedbackPercentage = this.countPositiveFeedbackPercentage.bind(this);
+
+        this.onLeaveFeedback = this.onLeaveFeedback.bind(this);
     }
-    handleGood = () =>
+    onLeaveFeedback = value =>
     {
-        for (let i = 0; i < 1; i += 1)
+        this.setState(prevState =>
         {
-            this.setState({ good: this.state.good + 1 });
-        }
-        this.countTotalFeedback();
-        this.countPositiveFeedbackPercentage();
-    };
-    handleNeutral = () =>
-    {
-        for (let i = 0; i < 1; i += 1)
-        {
-            this.setState({ neutral: this.state.neutral + 1 });
-        }
-        this.countTotalFeedback();
-        this.countPositiveFeedbackPercentage();
-    };
-    handleBad = () =>
-    {
-        for (let i = 0; i < 1; i += 1)
-        {
-            this.setState({ bad: this.state.bad + 1 });
-        }
+            switch (value.target.textContent)
+            {
+                case 'Good':
+                    return {
+                        good: prevState.good + 1,
+                    };
+                case 'Neutral':
+                    return {
+                        neutral: prevState.neutral + 1,
+                    };
+                case 'Bad':
+                    return {
+                        bad: prevState.bad + 1,
+                    };
+                default:
+                    return;
+            }
+        });
         this.countTotalFeedback();
         this.countPositiveFeedbackPercentage();
     };
@@ -70,9 +65,9 @@ export class Statistics extends Component
         return (
             <div>
                 <div className={Css.block}>
-                    <button className={Css['button']} type="button" onClick={this.handleGood}>Good</button>
-                    <button className={Css['button']} type="button" onClick={this.handleNeutral}>Neutral</button>
-                    <button className={Css['button']} type="button" onClick={this.handleBad}>Bad</button>
+                    <button className={Css['button']} type="button" onClick={this.onLeaveFeedback}>Good</button>
+                    <button className={Css['button']} type="button" onClick={this.onLeaveFeedback}>Neutral</button>
+                    <button className={Css['button']} type="button" onClick={this.onLeaveFeedback}>Bad</button>
                 </div>
                 <div>
                     {good > 0 || neutral > 0 || bad > 0 || total > 0 || positivePercentage > 0 ?
